@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'redis'
 
-redis = Redis.new(ur: ENV['REDIS_URL'], db: 0)
+redis = Redis.new(ur: ENV['REDIS_URL'])
 redis.set("test", "wicked sick")
 
 get '/' do
