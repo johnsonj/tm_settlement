@@ -1,5 +1,4 @@
-%p=msg
-%form{ action: "subscribe", method: "post" }
-    Email:
-    %input{ type: "email", name: "email" }
-    %input{ type: "submit", value: "Subscribe" }
+%form( action="subscribe" method="post" )
+    .input
+        %input.button( type="email" name="email" )
+        %input.button( type="submit" value="Subscribe" )

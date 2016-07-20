@@ -4,19 +4,22 @@ require 'haml'
 require 'json'
 
 redis = Redis.new(url: ENV['REDIS_URL'])
-redis.set("test", "wicked sick")
 
 EMAILS_HASH_NAME = "emails"
 
 get '/' do
-    msg = redis.get("test")
-    haml :index, locals: { msg: msg }
+    haml :index
 end
 
 post '/subscribe' do
     email = params[:email]
-    redis.hincrby(EMAILS_HASH_NAME, email, 1)
-    "Thanks"
+
+    unless email.empty? or email.nil?
+        redis.hincrby(EMAILS_HASH_NAME, email, 1)
+        "Thanks"
+    else
+        redirect "/"
+    end
 end
 
 get '/emails' do
