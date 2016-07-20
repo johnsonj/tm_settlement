@@ -1,7 +1,10 @@
 require 'sinatra'
+require 'sinatra/flash'
 require 'redis'
 require 'haml'
 require 'json'
+
+enable :sessions
 
 redis = Redis.new(url: ENV['REDIS_URL'])
 
@@ -16,10 +19,12 @@ post '/subscribe' do
 
     unless email.empty? or email.nil?
         redis.hincrby(EMAILS_HASH_NAME, email, 1)
-        "Thanks"
+        flash.next[:success] = "Successfully subscribed with #{email}"
     else
-        redirect "/"
+        flash.next[:error] = "There's only one field...how'd you mess that up?"
     end
+
+    redirect "/"
 end
 
 get '/emails' do
