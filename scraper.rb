@@ -37,9 +37,17 @@ output = []
 results = seattle.css("#result_local #tbl_local tr")
 
 results.each do |result|
-  date = result.css(".month abbr").first["title"]
+  month = result.css(".month abbr").first["title"]
+  date = result.css("td.date div.date").first.text
+  day = result.css(".day abbr").first["title"]
+
+  venue = result.css(".location span[itemprop='location'] strong > text()").text
+  location = result.css(".location span[itemprop='location'] > text()").text
+  time = result.css(".location div > text()").text
+
   artist = result.css("[itemprop='name performers']").first.text
-  output << { date: date, artist: artist }
+
+  output << { artist: artist, venue: venue, location: location, time: time, date: {month: month, date: date, day: day} }
 end
 
-puts output
+puts output.first
