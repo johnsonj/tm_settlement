@@ -14,6 +14,8 @@ body {
     padding: 10px;
 }
 
+/* INDEX PAGE */
+
 .flash {
     border-radius: 4px;
     padding: 5px;
@@ -75,7 +77,7 @@ input[type="submit"] {
     height: 46px;
     background: #1FCE6D;
     font-family: inherit;
-    font-weight: bold;
+    font-size: 18px;
     letter-spacing: 1px;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
@@ -99,4 +101,9 @@ input[type="email"]:focus {
     outline: none;
     /*outline: 2px solid #1FCE6D;*/
     box-shadow: 0 0 0 2px #1FCE6D inset; 
+}
+
+/* EVENTS PAGE */
+.event-middle div {
+    display: inline-block;
 }

@@ -1,0 +1,14 @@
+.events
+    - events.each do |event|
+        .event
+            .event-top
+                .artist=event["artist"]
+            .event-middle
+                .event-date="#{event['date']['month']} #{event['date']['date']}"
+                .event-venue=event["venue"]
+                .event-time=event["time"]
+                .event-location=event["location"]
+            .event-bottom
+                .event-url
+                    %a{ href: event["url"] }
+                        LiveNation

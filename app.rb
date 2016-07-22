@@ -9,6 +9,7 @@ enable :sessions
 redis = Redis.new(url: ENV['REDIS_URL'])
 
 EMAILS_HASH_NAME = "emails"
+EVENTS_HASH_NAME = "events"
 
 get '/' do
     haml :index
@@ -30,4 +31,16 @@ end
 get '/emails' do
     emails = redis.hkeys(EMAILS_HASH_NAME)
     "#{emails}"
+end
+
+get '/events' do
+    events = []
+
+    event_keys = redis.hkeys(EVENTS_HASH_NAME)
+    
+    event_keys.each do |key|
+        events << JSON.parse(redis.hget(EVENTS_HASH_NAME, key))
+    end
+    
+    haml :events, locals: { events: events }
 end

@@ -1,10 +1,14 @@
 require "watir-webdriver"
 require "nokogiri"
+require 'redis'
+require 'json'
 
 BASE_URL = "http://concerts.livenation.com"
 SETTLEMENT_PATH = "/microsite/settlement"
+EVENTS_HASH_NAME = "events"
 
 browser = Watir::Browser.new :phantomjs
+redis = Redis.new(url: ENV['REDIS_URL'])
 
 def goto_page(browser, url)
   browser.goto url
@@ -29,11 +33,10 @@ seattle_url = "#{BASE_URL}#{seattle_path}"
 # Go to Great Seattle Area concert list
 puts "Going to #{seattle_url}"
 browser.goto seattle_url
-browser.td(class: "event").wait_until_present(5)
+browser.td(class: "event").wait_until_present(10)
 seattle = Nokogiri::HTML.parse browser.html
 
 # Grab results
-output = []
 results = seattle.css("#result_local #tbl_local tr")
 
 results.each do |result|
@@ -46,8 +49,24 @@ results.each do |result|
   time = result.css(".location div > text()").text
 
   artist = result.css("[itemprop='name performers']").first.text
+  
+  url = result.css("a.event").first["href"]
 
-  output << { artist: artist, venue: venue, location: location, time: time, date: {month: month, date: date, day: day} }
+  event = { 
+    artist: artist,
+    venue: venue,
+    location: location,
+    time: time,
+    date: { 
+      month: month,
+      date: date,
+      day: day } ,
+    url: url
+  }
+
+  hash = "#{date}#{month}#{artist}"
+
+  if !redis.hexists(EVENTS_HASH_NAME, hash)
+    redis.hset(EVENTS_HASH_NAME, hash, JSON.generate(event))
+  end
 end
-
-puts output.first
