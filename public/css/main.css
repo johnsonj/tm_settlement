@@ -107,3 +107,10 @@ input[type="email"]:focus {
 .event-middle div {
     display: inline-block;
 }
+
+.event {
+    padding: 10px;
+    background: lightslategray;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
