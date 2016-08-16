@@ -104,13 +104,26 @@ input[type="email"]:focus {
 }
 
 /* EVENTS PAGE */
-.event-middle div {
-    display: inline-block;
-}
-
 .event {
     padding: 10px;
     background: lightslategray;
     border-radius: 5px;
     margin-bottom: 10px;
+    display: flex;
+}
+
+.event-left {
+    display: inline-block;
+    order: 1;
+    flex-grow: 0;
+    padding-right: 10px;
+}
+
+.event-right{
+    order: 2;
+    flex-grow: 1;
+}
+
+.event-middle div {
+    display: inline-block;
 }
